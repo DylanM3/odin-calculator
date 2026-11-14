@@ -6,6 +6,7 @@ const currentCalc = document.getElementById("currentCalc");
 const previousCalc = document.getElementById("previousCalc");
 const digitBtns = document.querySelectorAll(".digit");
 const operatorBtns = document.querySelectorAll(".operator")
+const equalsBtn = document.getElementById("equalsBtn");
 let firstNum;
 let currentOperator;
 let secondNum;
@@ -43,6 +44,7 @@ function operate(a, b, operation) {
 // Screen Functions
 // ----------------
 
+// Only clear `currentCalc` from the screen
 function clearScreen() {
     currentCalc.textContent = "";
 }
@@ -55,7 +57,7 @@ function clearScreen() {
 // 1: Update the screen with the target clicked
 digitBtns.forEach(button => {
     button.addEventListener("click", (event) => {
-        const digit = event.target.textContent;
+        const digit = event.target.textContent.trim();
         currentCalc.textContent += digit;
     });
 })
@@ -66,8 +68,16 @@ digitBtns.forEach(button => {
 // 3: Clear the screen
 operatorBtns.forEach(button => {
     button.addEventListener("click", (event) => {
-        const currentOperator = event.target.textContent;
-        firstNum = currentCalc.textContent;
+        currentOperator = event.target.textContent.trim();
+        firstNum = Number(currentCalc.textContent);
         clearScreen()
     })
+})
+
+// Equals Button: On Click
+// 1: Convert the display into `secondNum`
+// 2: Call `operate(firstNum, secondNum, currentOperator`
+equalsBtn.addEventListener("click", (event) => {
+    secondNum = Number(currentCalc.textContent);
+    currentCalc.textContent = operate(firstNum, secondNum, currentOperator);
 })

@@ -1,15 +1,16 @@
-// ---------------------------------
-// Create references to DOM elements
-// ---------------------------------
+// ----------------------------------------------------------
+// Create references to DOM elements and create new variables
+// ----------------------------------------------------------
 
-const currentCalc = document.getElementById("currentCalc");
-const previousCalc = document.getElementById("previousCalc");
+const screen = document.getElementById("screen");
 const digitBtns = document.querySelectorAll(".digit");
 const operatorBtns = document.querySelectorAll(".operator")
 const equalsBtn = document.getElementById("equalsBtn");
+const clearBtn = document.getElementById("clearBtn");
 let firstNum;
-let currentOperator;
 let secondNum;
+let currentOperator;
+let currentInput = "";
 let shouldResetDisplay = false;
 
 // --------------------
@@ -40,13 +41,18 @@ function operate(a, b, operation) {
     }
 }
 
-// ----------------
-// Screen Functions
-// ----------------
+// ---------------
+// Clear Functions
+// ---------------
 
-// Only clear `currentCalc` from the screen
 function clearScreen() {
-    currentCalc.textContent = "";
+    screen.textContent = "";
+}
+
+function clearVariables() {
+    currentInput = "";
+    firstNum = undefined;
+    secondNum = undefined;
 }
 
 // ---------------
@@ -58,7 +64,13 @@ function clearScreen() {
 digitBtns.forEach(button => {
     button.addEventListener("click", (event) => {
         const digit = event.target.textContent.trim();
-        currentCalc.textContent += digit;
+        if(shouldResetDisplay) {
+            screen.textContent = "";
+            currentInput = "";
+            shouldResetDisplay = false;
+        }
+        currentInput += digit;
+        screen.textContent += digit;
     });
 })
 
@@ -68,9 +80,10 @@ digitBtns.forEach(button => {
 // 3: Clear the screen
 operatorBtns.forEach(button => {
     button.addEventListener("click", (event) => {
+        firstNum = Number(currentInput);
+        currentInput = ""; // Reset current input, ready for the next number
         currentOperator = event.target.textContent.trim();
-        firstNum = Number(currentCalc.textContent);
-        clearScreen()
+        screen.textContent += ` ${currentOperator} `;
     })
 })
 
@@ -78,6 +91,16 @@ operatorBtns.forEach(button => {
 // 1: Convert the display into `secondNum`
 // 2: Call `operate(firstNum, secondNum, currentOperator`
 equalsBtn.addEventListener("click", (event) => {
-    secondNum = Number(currentCalc.textContent);
-    currentCalc.textContent = operate(firstNum, secondNum, currentOperator);
+    secondNum = Number(currentInput);
+    screen.textContent = operate(firstNum, secondNum, currentOperator);
+    shouldResetDisplay = true;
+    clearVariables();
 })
+
+// Clear Button: On Click
+// 1: Clear the screen
+// 2: Clear the input variables
+clearBtn.addEventListener("click", (event) => {
+    clearScreen(event);
+    clearVariables(event);
+});

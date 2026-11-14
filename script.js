@@ -4,7 +4,7 @@
 
 const currentCalc = document.getElementById("currentCalc");
 const previousCalc = document.getElementById("previousCalc");
-const digits = document.querySelectorAll(".digit");
+const digitButtons = document.querySelectorAll(".digit");
 let firstNum;
 let currentOperator;
 let secondNum;
@@ -36,3 +36,14 @@ function operate(a, b, operation) {
             return "operateLogicError";
     }
 }
+
+// ---------------
+// Event Listeners
+// ---------------
+
+// Loops over every button, adds an event listener, and logs which button was pressed
+digitButtons.forEach(button => {
+    button.addEventListener("click", (event) => {
+        console.log("Clicked: ", event.target);
+    });
+})

@@ -1,6 +1,6 @@
-// -------------------------------------------
-// Create references to each button in the DOM
-// -------------------------------------------
+// ---------------------------------
+// Create references to DOM elements
+// ---------------------------------
 
 const currentCalc = document.getElementById("currentCalc");
 const previousCalc = document.getElementById("previousCalc");
@@ -13,21 +13,14 @@ let secondNum;
 // Arithmetic Functions
 // --------------------
 
-function add(a, b) {
-    return a + b;
-}
+const add = (a, b) => a + b;
+const subtract = (a, b) => a - b;
+const multiply = (a, b) => a * b;
+const divide = (a, b) => a / b;
 
-function subtract(a, b) {
-    return a - b;
-}
-
-function multiply(a, b) {
-    return a * b;
-}
-
-function divide(a, b) {
-    return a / b;
-}
+// ---------------------
+// Calculating Functions
+// ---------------------
 
 function operate(a, b, operation) {
     switch(operation) {

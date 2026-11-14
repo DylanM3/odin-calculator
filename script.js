@@ -5,6 +5,7 @@
 // Screen Container
 const screen = document.getElementById("screen");
 // Number Button Container
+const zeroBtn = document.getElementById("zeroBtn");
 const oneBtn = document.getElementById("oneBtn");
 const twoBtn = document.getElementById("twoBtn");
 const threeBtn = document.getElementById("threeBtn");

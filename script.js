@@ -52,7 +52,8 @@ function clearScreen() {
 function clearVariables() {
     currentInput = "";
     firstNum = undefined;
-    secondNum = undefined;
+    currentOperator = undefined;
+    shouldResetDisplay = false;
 }
 
 // ---------------
@@ -80,12 +81,25 @@ digitBtns.forEach(button => {
 // 3: Clear the screen
 operatorBtns.forEach(button => {
     button.addEventListener("click", (event) => {
-        firstNum = Number(currentInput);
-        currentInput = ""; // Reset current input, ready for the next number
+
+        if(shouldResetDisplay) {
+            firstNum = Number(screen.textContent);
+            shouldResetDisplay = false;
+
+        } else if(firstNum !== undefined) {
+            // Existing calculation needs evaluating
+            secondNum = Number(currentInput);
+            firstNum = operate(firstNum, secondNum, currentOperator);
+
+        } else {
+            firstNum = Number(currentInput);
+        }
+
+        currentInput = "";
         currentOperator = event.target.textContent.trim();
         screen.textContent += ` ${currentOperator} `;
-    })
-})
+    });
+});
 
 // Equals Button: On Click
 // 1: Convert the display into `secondNum`
@@ -93,8 +107,8 @@ operatorBtns.forEach(button => {
 equalsBtn.addEventListener("click", (event) => {
     secondNum = Number(currentInput);
     screen.textContent = operate(firstNum, secondNum, currentOperator);
-    shouldResetDisplay = true;
     clearVariables();
+    shouldResetDisplay = true;
 })
 
 // Clear Button: On Click

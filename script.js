@@ -4,10 +4,12 @@
 
 const currentCalc = document.getElementById("currentCalc");
 const previousCalc = document.getElementById("previousCalc");
-const digitButtons = document.querySelectorAll(".digit");
+const digitBtns = document.querySelectorAll(".digit");
+const operatorBtns = document.querySelectorAll(".operator")
 let firstNum;
 let currentOperator;
 let secondNum;
+let shouldResetDisplay = false;
 
 // --------------------
 // Arithmetic Functions
@@ -37,13 +39,35 @@ function operate(a, b, operation) {
     }
 }
 
+// ----------------
+// Screen Functions
+// ----------------
+
+function clearScreen() {
+    currentCalc.textContent = "";
+}
+
 // ---------------
 // Event Listeners
 // ---------------
 
-// Loops over every button, adds an event listener, and logs which button was pressed
-digitButtons.forEach(button => {
+// Digit Button: On Click
+// 1: Update the screen with the target clicked
+digitBtns.forEach(button => {
     button.addEventListener("click", (event) => {
-        console.log("Clicked: ", event.target);
+        const digit = event.target.textContent;
+        currentCalc.textContent += digit;
     });
+})
+
+// Operator Button: On Click
+// 1: Store the operator clicked in `currentOperator`
+// 2: Convert the display into `firstNum`
+// 3: Clear the screen
+operatorBtns.forEach(button => {
+    button.addEventListener("click", (event) => {
+        const currentOperator = event.target.textContent;
+        firstNum = currentCalc.textContent;
+        clearScreen()
+    })
 })

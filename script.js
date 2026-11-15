@@ -2,6 +2,16 @@
 // Create references to DOM elements and create new variables
 // ----------------------------------------------------------
 
+const screen = document.getElementById("screen")
+const digitBtns = document.querySelectorAll(".digit");
+const operatorBtns = document.querySelectorAll(".operator");
+const equalsBtn = document.getElementById("equalsBtn");
+const clearBtn = document.getElementById("clearBtn");
+
+// ----------------
+// Screen Functions
+// ----------------
+
 // --------------------
 // Arithmetic Functions
 // --------------------
@@ -29,3 +39,13 @@ function operate(a, b, operation) {
             return "operateLogicError";
     }
 }
+
+// ---------------
+// Event Listeners
+// ---------------
+
+digitBtns.forEach(button => {
+    button.addEventListener("click", (event) => {
+        console.log(event.target.textContent);
+    })
+})

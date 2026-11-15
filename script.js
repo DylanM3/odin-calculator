@@ -7,6 +7,9 @@ const digitBtns = document.querySelectorAll(".digit");
 const operatorBtns = document.querySelectorAll(".operator");
 const equalsBtn = document.getElementById("equalsBtn");
 const clearBtn = document.getElementById("clearBtn");
+let firstNum;
+let secondNum;
+let operator;
 
 // ----------------
 // Screen Functions
@@ -25,8 +28,8 @@ const divide = (a, b) => a / b;
 // Calculating Functions
 // ---------------------
 
-function operate(a, b, operation) {
-    switch(operation) {
+function operate(a, b, operator) {
+    switch(operator) {
         case '+':
             return add(a, b);
         case '-':
@@ -45,6 +48,12 @@ function operate(a, b, operation) {
 // ---------------
 
 digitBtns.forEach(button => {
+    button.addEventListener("click", (event) => {
+        console.log(event.target.textContent);
+    })
+})
+
+operatorBtns.forEach(button => {
     button.addEventListener("click", (event) => {
         console.log(event.target.textContent);
     })

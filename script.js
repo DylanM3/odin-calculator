@@ -13,7 +13,7 @@ let firstNum = "";
 let secondNum = "";
 let currentOp = "";
 let ans = "";
-const DECIMAL_LIMIT = 4;
+const DECIMAL_LIMIT = 6;
 
 // --------------------
 // Arithmetic Functions
@@ -29,7 +29,12 @@ const divide = (a, b) => b === 0 ? null : a / b;
 // ----------------
 
 function updateScreen() {
-    screen.textContent = `${firstNum} ${currentOp} ${secondNum}`;
+    screen.textContent = `${formatNum(firstNum)} ${currentOp} ${formatNum(secondNum)}`;
+}
+
+function formatNum(num) {
+    if (num === "") return "";
+    return +Number(num).toFixed(DECIMAL_LIMIT);
 }
 
 // ---------------------
@@ -52,10 +57,14 @@ function operate(a, b, op) {
             ans = multiply(a, b);
             return ans;
         case '/':
-            ans = divide(a, b);
-            return ans;
+            const nullCheck = divide(a, b);
+            if (nullCheck !== null) {
+                ans = nullCheck;
+                return ans;
+            }
+            return "Nice try.";
         default:
-            return "operateLogicError";
+            return "";
     }
 
 }
@@ -81,14 +90,19 @@ function handleOperatorClick(op) {
 }
 
 function handleEqualsClick(event) {
-    firstNum = String(operate(firstNum, secondNum, currentOp)); // Store result in `firstNum` as a string
+    if (firstNum !== "" && secondNum !== "" && currentOp !== "") {
+        firstNum = String(operate(firstNum, secondNum, currentOp)); // Store result in `firstNum` as a string
+    }
+    if (firstNum === "Nice try.") {
+        firstNum = ans;
+    }
     secondNum = "";
     currentOp = "";
     updateScreen()
 }
 
 function handlesAnsClick(event) {
-    if (firstNum !== "") {
+    if (currentOp === "") {
         firstNum = ans;
     } else {
         secondNum = ans;
@@ -105,14 +119,13 @@ function handlesClearClick(event) {
 
 function handlesDeleteClick(event) {
     if (secondNum !== "") {
+        secondNum = String(secondNum);
         secondNum = secondNum.slice(0, -1);
     } else if (currentOp !== "") {
         currentOp = currentOp.slice(0, -1);
     } else {
-        if (firstNum === 'operateLogicError') {
-            firstNum = "";
-        }
-        firstNum = firstNum.slice(0, -1);
+    firstNum = String(firstNum);
+    firstNum = firstNum.slice(0, -1);
     }
     updateScreen();
 }

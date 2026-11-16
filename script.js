@@ -6,11 +6,13 @@ const screen = document.getElementById("screen");
 const digitBtns = document.querySelectorAll(".digit");
 const operatorBtns = document.querySelectorAll(".operator");
 const equalsBtn = document.getElementById("equalsBtn");
+const ansBtn = document.getElementById("ansBtn");
 const clearBtn = document.getElementById("clearBtn");
 const delBtn = document.getElementById("delBtn");
 let firstNum = "";
 let secondNum = "";
 let currentOp = "";
+let ans = "";
 const DECIMAL_LIMIT = 4;
 
 // --------------------
@@ -41,16 +43,21 @@ function operate(a, b, op) {
 
     switch (op) {
         case '+':
-            return add(a, b);
+            ans = add(a, b);
+            return ans;
         case '-':
-            return subtract(a, b);
+            ans = subtract(a, b);
+            return ans;
         case '*':
-            return multiply(a, b);
+            ans = multiply(a, b);
+            return ans;
         case '/':
-            return divide(a, b);
+            ans = divide(a, b);
+            return ans;
         default:
             return "operateLogicError";
     }
+
 }
 
 // ------------------------
@@ -67,7 +74,9 @@ function handleDigitClick(digit) {
     updateScreen();
 }
 
-function handleOperatorClick() {
+function handleOperatorClick(op) {
+    if (firstNum === "") return;
+    currentOp = op
     updateScreen();
 }
 
@@ -76,6 +85,15 @@ function handleEqualsClick(event) {
     secondNum = "";
     currentOp = "";
     updateScreen()
+}
+
+function handlesAnsClick(event) {
+    if (firstNum !== "") {
+        firstNum = ans;
+    } else {
+        secondNum = ans;
+    }
+    updateScreen();
 }
 
 function handlesClearClick(event) {
@@ -114,7 +132,6 @@ function handleKeyboardInput(event) {
         if (key === '/') {
             event.preventDefault();
         }
-        currentOp = key;
         handleOperatorClick(key);
         return // Stop continuation into the switch
     }
@@ -139,14 +156,13 @@ function handleKeyboardInput(event) {
 // ---------------
 
 digitBtns.forEach(button => button.addEventListener("click", (event) => {
-    const digit = event.target.textContent.trim();
-    handleDigitClick(digit);
+    handleDigitClick(event.target.textContent.trim());
 }));
 operatorBtns.forEach(button => button.addEventListener("click", (event) => {
-    currentOp = event.target.textContent.trim()
-    handleOperatorClick();
+    handleOperatorClick(event.target.textContent.trim());
 }));
 equalsBtn.addEventListener("click", handleEqualsClick);
+ansBtn.addEventListener("click", handlesAnsClick);
 clearBtn.addEventListener("click", handlesClearClick);
 delBtn.addEventListener("click", handlesDeleteClick);
 document.addEventListener("keydown", handleKeyboardInput);

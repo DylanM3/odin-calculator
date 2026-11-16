@@ -1,3 +1,23 @@
+body {
+  margin: 0;
+  height: 100vh;
+  padding-bottom: 8vh;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+}
+
+#title {
+    padding: 0;
+    margin: 0;
+    font-family: "Londrina Shadow", sans-serif;
+    /* font size spans the screen, horizontally matching*/
+    font-size: 93px; /* MAGIC NUMBER: woah, bad code? */
+}
+
 #calc-container {
     display: flex;
     justify-content: center;
@@ -5,25 +25,77 @@
     height: 100vh;
 }
 
-.row {
+#btn-container {
     display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 392px;
+    padding: 30px;
 }
 
-#row--1 {
+.row {
     display: flex;
-    align-items: center;
-    min-height: 60px;
+    gap: 12px
+}
+
+#row-1 {
+    display: flex;
+    width: 100%;
+    height: 108px;
+    margin-bottom: 20px;
+}
+
+#screen {
+    box-sizing: border-box;
+    display: block;
+    flex: 1;
+    width: 0;
+    min-width: 0;
+    padding: 30px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 40px;
+    font-family: 'Seven Segment', sans-serif;
+    background-color: white;
+    border: 3px solid gray;
+    border-radius: 2px;
 }
 
 button {
     box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     padding: 10px;
-    width: 80px;
-    height: 60px;
-    margin: 2px;
+    width: 90px;
+    height: 65px;
+    font-size: 20px;
+    border: 3px solid gray;
     border-radius: 3px;
 }
 
 #equalsBtn {
-    width: 164px;
+    width: 188px;
+}
+
+footer {
+    /* FIXED FOOTER  STYLING */
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 8vh;
+    /* VISUAL STYLING */
+    background-color: #d4d4d9;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+footer a {
+    font-family: "Playpen Sans", cursive;
+    font-size: 20px;
+    color: black;
+    text-decoration: none;
 }

@@ -1,12 +1,21 @@
+.row {
+    display: flex;
+}
+
 #screen-container {
     display: flex;
     align-items: center;
     min-height: 60px;
 }
 
-#btn-container {
-    display: flex;
-    padding: 20px;
-    background-color: whitesmoke;
-    outline : 3px solid lightgray;
+button {
+    box-sizing: border-box;
+    padding: 10px;
+    width: 80px;
+    height: 60px;
+    margin: 2px;
+}
+
+#equalsBtn {
+    width: 164px;
 }

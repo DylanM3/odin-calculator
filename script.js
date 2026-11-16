@@ -5,12 +5,13 @@
 const screen = document.getElementById("screen");
 const digitBtns = document.querySelectorAll(".digit");
 const operatorBtns = document.querySelectorAll(".operator");
-const equalsBtn = document.getElementById("equals-btn");
+const equalsBtn = document.getElementById("equalsBtn");
 const clearBtn = document.getElementById("clearBtn");
 const delBtn = document.getElementById("delBtn");
-let prevNum = "";
-let currNum = "";
-let currOp = "";
+let firstNum = "";
+let secondNum = "";
+let currentOp = "";
+let shouldResetScreen = false;
 
 // --------------------
 // Arithmetic Functions
@@ -21,12 +22,24 @@ const subtract = (a, b) => a - b;
 const multiply = (a, b) => a * b;
 const divide = (a, b) => b === 0 ? null : a / b;
 
+// ----------------
+// Screen Functions
+// ----------------
+
+function updateScreen() {
+    screen.textContent = `${firstNum} ${currentOp} ${secondNum}`;
+}
+
 // ---------------------
 // Calculating Functions
 // ---------------------
 
-function operate(a, b, operation) {
-    switch(operation) {
+function operate(a, b, op) {
+    // Cast a & b to numbers
+    a = Number(a);
+    b = Number(b);
+
+    switch(op) {
         case '+':
             return add(a, b);
         case '-':
@@ -40,25 +53,40 @@ function operate(a, b, operation) {
     }
 }
 
-// TODO: Create a function to handle digit button clicks.
+// ------------------------
+// Click Handling Functions
+// ------------------------
 
-// TODO: Create a function to handle operator button clicks.
+function handleDigitClick(event) {
+    const digit = event.target.textContent.trim();
 
-// TODO: Create a function to calculate the result using operate().
+    if (shouldResetScreen) {
+        screen.textContent = "";
+        shouldResetScreen = false;
+    }
 
-// TODO: Prevent users from entering multiple decimal points in one number.
+    if (currentOp === "") {
+        firstNum += digit;
+    } else {
+        secondNum += digit;
+    }
 
-// TODO: Handle division by zero.
+    updateScreen();
+}
 
-// TODO: Create a function to clear the calculator and reset its variables.
+function handleOperatorClick(event) {
+    currentOp = event.target.textContent.trim()
+    updateScreen();
+}
 
-// TODO: Create a function to delete the last entered digit.
+function handleEqualsClick(event) {
+    screen.textContent = operate(firstNum, secondNum, currentOp);
+}
 
-// TODO: Handle calculations involving consecutive operations.
+// ---------------
+// Event Listeners
+// ---------------
 
-// TODO: Handle edge cases (e.g. pressing equals without enough numbers,
-// pressing multiple operators consecutively, or entering a decimal first).
-
-// TODO: Add event listeners to all calculator buttons.
-
-// TODO: Test all arithmetic operations and edge cases.
+digitBtns.forEach(button => button.addEventListener("click", handleDigitClick));
+operatorBtns.forEach(button => button.addEventListener("click", handleOperatorClick));
+equalsBtn.addEventListener("click", handleEqualsClick);

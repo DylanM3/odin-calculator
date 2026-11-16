@@ -12,6 +12,7 @@ let firstNum = "";
 let secondNum = "";
 let currentOp = "";
 let shouldResetScreen = false;
+const DECIMAL_LIMIT = 4;
 
 // --------------------
 // Arithmetic Functions
@@ -39,7 +40,7 @@ function operate(a, b, op) {
     a = Number(a);
     b = Number(b);
 
-    switch(op) {
+    switch (op) {
         case '+':
             return add(a, b);
         case '-':
@@ -57,14 +58,7 @@ function operate(a, b, op) {
 // Click Handling Functions
 // ------------------------
 
-function handleDigitClick(event) {
-    const digit = event.target.textContent.trim();
-
-    if (shouldResetScreen) {
-        screen.textContent = "";
-        shouldResetScreen = false;
-    }
-
+function handleDigitClick(digit) {
     if (currentOp === "") {
         firstNum += digit;
     } else {
@@ -74,19 +68,83 @@ function handleDigitClick(event) {
     updateScreen();
 }
 
-function handleOperatorClick(event) {
-    currentOp = event.target.textContent.trim()
+function handleOperatorClick() {
     updateScreen();
 }
 
 function handleEqualsClick(event) {
-    screen.textContent = operate(firstNum, secondNum, currentOp);
+    firstNum = operate(firstNum, secondNum, currentOp); // Store result in `firstNum`
+    secondNum = "";
+    currentOp = "";
+    updateScreen()
+}
+
+function handlesClearClick(event) {
+    firstNum = "";
+    secondNum = "";
+    currentOp = "";
+    updateScreen();
+}
+
+function handlesDeleteClick(event) {
+    if (secondNum !== "") {
+        secondNum = secondNum.slice(0, -1);
+    } else if (currentOp !== "") {
+        currentOp = currentOp.slice(0, -1);
+    } else {
+        firstNum = firstNum.slice(0, -1);
+    }
+    updateScreen();
+}
+
+// -----------------
+// Keyboard Handling
+// -----------------
+
+function handleKeyboardInput(event) {
+    const key = event.key;
+
+    if ("0123456789".includes(key)) {
+        handleDigitClick(key);
+        return // Stop continuation into the switch
+    }
+    if ("+-*/".includes(key)) {
+        if (key === '/') {
+            event.preventDefault();
+        }
+        currentOp = key;
+        handleOperatorClick(key);
+        return // Stop continuation into the switch
+    }
+
+    switch (key) {
+        case "Enter":
+        case '=':
+            handleEqualsClick(key);
+            break;
+        case "Backspace":
+            handlesDeleteClick(key);
+            break;
+        case "Escape":
+            handlesClearClick(key);
+            break;
+        default: return
+    }
 }
 
 // ---------------
 // Event Listeners
 // ---------------
 
-digitBtns.forEach(button => button.addEventListener("click", handleDigitClick));
-operatorBtns.forEach(button => button.addEventListener("click", handleOperatorClick));
+digitBtns.forEach(button => button.addEventListener("click", (event) => {
+    const digit = event.target.textContent.trim();
+    handleDigitClick(digit);
+}));
+operatorBtns.forEach(button => button.addEventListener("click", (event) => {
+    currentOp = event.target.textContent.trim()
+    handleOperatorClick();
+}));
 equalsBtn.addEventListener("click", handleEqualsClick);
+clearBtn.addEventListener("click", handlesClearClick);
+delBtn.addEventListener("click", handlesDeleteClick);
+document.addEventListener("keydown", handleKeyboardInput);

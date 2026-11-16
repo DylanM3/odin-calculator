@@ -11,7 +11,6 @@ const delBtn = document.getElementById("delBtn");
 let firstNum = "";
 let secondNum = "";
 let currentOp = "";
-let shouldResetScreen = false;
 const DECIMAL_LIMIT = 4;
 
 // --------------------
@@ -73,7 +72,7 @@ function handleOperatorClick() {
 }
 
 function handleEqualsClick(event) {
-    firstNum = operate(firstNum, secondNum, currentOp); // Store result in `firstNum`
+    firstNum = String(operate(firstNum, secondNum, currentOp)); // Store result in `firstNum` as a string
     secondNum = "";
     currentOp = "";
     updateScreen()
@@ -92,6 +91,9 @@ function handlesDeleteClick(event) {
     } else if (currentOp !== "") {
         currentOp = currentOp.slice(0, -1);
     } else {
+        if (firstNum === 'operateLogicError') {
+            firstNum = "";
+        }
         firstNum = firstNum.slice(0, -1);
     }
     updateScreen();

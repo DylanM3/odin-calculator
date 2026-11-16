@@ -33,7 +33,7 @@ function updateScreen() {
 }
 
 function formatNum(num) {
-    if (num === "") return "";
+    if (num === "" || num === ".") return num;
     return +Number(num).toFixed(DECIMAL_LIMIT);
 }
 
@@ -75,11 +75,16 @@ function operate(a, b, op) {
 
 function handleDigitClick(digit) {
     if (currentOp === "") {
+        if (digit === ".") {
+            if (firstNum.includes(".")) return;
+        }
         firstNum += digit;
     } else {
+        if (digit === ".") {
+            if (secondNum.includes(".")) return;
+        }
         secondNum += digit;
     }
-
     updateScreen();
 }
 
@@ -137,7 +142,7 @@ function handlesDeleteClick(event) {
 function handleKeyboardInput(event) {
     const key = event.key;
 
-    if ("0123456789".includes(key)) {
+    if ("0.123456789".includes(key)) {
         handleDigitClick(key);
         return // Stop continuation into the switch
     }
